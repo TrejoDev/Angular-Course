@@ -1,0 +1,12 @@
+<h3>{{listName()}}:</h3>
+<ul>
+    @for (ch of characters(); track ch.id; let idx = $index) {
+    @if( ch.power > 500 ){
+    <li>
+        <span> {{idx + 1}} {{ch.name}} =></span>
+        <strong [class.text-danger]="ch.power > 9000" [class.text-primary]="ch.power < 9000">
+            {{ch.power}}</strong>
+    </li>
+    }
+    }
+</ul>
