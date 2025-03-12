@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ItemComponent } from '../item/item.component';
+import { Gif } from '../../interfaces/gif.interface';
 
 @Component({
   selector: 'gifs-list',
@@ -7,5 +8,5 @@ import { ItemComponent } from '../item/item.component';
   templateUrl: './list.component.html',
 })
 export class ListComponent {
-  listItem = input.required<string[]>();
+  listItem = input.required<Gif[]>();
 }
