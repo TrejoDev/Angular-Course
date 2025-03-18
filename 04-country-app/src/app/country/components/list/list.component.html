@@ -1,0 +1,56 @@
+<section class="mt-5">
+  <table class="table table-md mt-2 w-full">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Icon</th>
+        <th>flag</th>
+        <th>name</th>
+        <th>Capital</th>
+        <th>population</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (country of countries(); track country.cca2; let index = $index) {
+      <tr>
+        <td>{{ index + 1 }}</td>
+        <td>{{ country.flag }}</td>
+        <td>
+          <img [src]="country.flagSvg" alt="country.name" class="w-10" />
+        </td>
+        <td>{{ country.name }}</td>
+        <td>{{ country.capital }}</td>
+        <span class="badge badge-secondary">
+          <td>{{ country.population | number }}</td>
+        </span>
+        <td>
+          <a
+            [routerLink]="['/country/by', country.cca2]"
+            class="link-primary cursor-pointer"
+            >Additional info</a
+          >
+        </td>
+      </tr>
+
+      } @if(errorMessage()){
+      <tr>
+        <td colspan="8" class="text-center">{{ errorMessage() }}</td>
+      </tr>
+      }
+      <!--  -->
+
+      @if(countries().length === 0 && !isLoading()){
+      <tr>
+        <td colspan="8" class="text-center">Results not found</td>
+      </tr>
+      }
+      <!--  -->
+
+      @if(isLoading()){
+      <tr>
+        <td colspan="8" class="text-center">Searching countries</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</section>
