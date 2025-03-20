@@ -1,6 +1,23 @@
-<country-search-input
-  (value)="onSearch($event)"
-  placeholder="Search by region"
-/>
+<h1 class="text-2xl">By Region</h1>
+<h3 class="text-lg">Select Region</h3>
 
-<!-- <country-list /> -->
+<section class="row mt-2">
+  <div class="flex-col">
+    @for (region of regions; track region) {
+    <button
+      class="btn mr-2 btn-outline w-[100px]"
+      (click)="query.set(region)"
+      [class.btn-primary]="query() === region"
+    >
+      {{ region }}
+    </button>
+    }
+  </div>
+</section>
+
+<country-list
+  [countries]="countryResource.value() ?? []"
+  [errorMessage]="countryResource.error()"
+  [isEmpty]="countryResource.value()?.length === 0"
+  [isLoading]="countryResource.isLoading()"
+/>
