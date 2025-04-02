@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "maps-app": {
+    "teslo-shop": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/maps-app",
+            "outputPath": "dist/teslo-shop",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "maps-app:build:production"
+              "buildTarget": "teslo-shop:build:production"
             },
             "development": {
-              "buildTarget": "maps-app:build:development"
+              "buildTarget": "teslo-shop:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -94,6 +94,6 @@
     }
   },
   "cli": {
-    "analytics": "d30c697b-b682-4a04-bfaa-374c9939bd4d"
+    "analytics": "39f4413c-3063-4b83-9bc0-780f3684d49c"
   }
 }
