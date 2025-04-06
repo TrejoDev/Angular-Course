@@ -1,0 +1,15 @@
+<h1 class="text-3xl font-bold font-montserrat">All Products {{paginationService.currentPage()}}</h1>
+<h1 class="text-xl text-secondary font-montserrat">For all tastes</h1>
+
+
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-2">
+    @for (product of productResource.value()?.products; track product.id) {
+    <product-card [product]="product" />
+    }
+    @empty {
+    <p>No products</p>
+    }
+</div>
+
+<app-pagination [pages]="productResource.value()?.pages ?? 0" [currentPage]="paginationService.currentPage()" />
