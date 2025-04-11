@@ -32,10 +32,6 @@ export class ProductCarouselComponent implements AfterViewInit, OnChanges {
 
   swiper: Swiper | undefined = undefined;
 
-  ngAfterViewInit(): void {
-    this.swiperInit();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['images'].firstChange) {
       return;
@@ -51,6 +47,10 @@ export class ProductCarouselComponent implements AfterViewInit, OnChanges {
     setTimeout(() => {
       this.swiperInit();
     }, 100);
+  }
+
+  ngAfterViewInit(): void {
+    this.swiperInit();
   }
 
   swiperInit() {

@@ -36,7 +36,8 @@ export class ProductDetailComponent implements OnInit {
 
   imageFilesList: FileList | undefined = undefined;
   tempImages = signal<string[]>([]);
-  imageToCarousel = computed(() => {
+
+  imagesToCarousel = computed(() => {
     const currentProductImages = [
       ...this.product().images,
       ...this.tempImages(),
