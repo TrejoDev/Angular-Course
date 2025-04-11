@@ -6,7 +6,7 @@ import {
   Product,
   ProductResponse,
 } from '@products/interfaces/product.interface';
-import { map, Observable, of, tap } from 'rxjs';
+import { forkJoin, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const baseUrl = environment.baseUrl;
@@ -84,17 +84,37 @@ export class ProductService {
 
   updateProduct(
     id: string,
-    productLike: Partial<Product>
+    productLike: Partial<Product>,
+    imgFileList?: FileList
   ): Observable<Product> {
-    return this.http
-      .patch<Product>(`${baseUrl}/products/${id}`, productLike)
-      .pipe(tap((p) => this.updatedProductCache(p)));
+    const currentImages = productLike.images ?? [];
+
+    return this.uploadImages(imgFileList).pipe(
+      map((imgName) => ({
+        ...productLike,
+        images: [...currentImages, ...imgName],
+      })),
+      switchMap((updatedProduct) =>
+        this.http.patch<Product>(`${baseUrl}/products/${id}`, updatedProduct)
+      ),
+      tap((p) => this.updatedProductCache(p))
+    );
   }
 
-  createProduct(productLike: Partial<Product>): Observable<Product> {
-    return this.http
-      .post<Product>(`${baseUrl}/products`, productLike)
-      .pipe(tap((p) => this.updatedProductCache(p)));
+  createProduct(
+    productLike: Partial<Product>,
+    imgFileList?: FileList
+  ): Observable<Product> {
+    return this.uploadImages(imgFileList).pipe(
+      map((imgName) => ({
+        ...productLike,
+        images: imgFileList ? [...imgName] : [],
+      })),
+      switchMap((newProduct) =>
+        this.http.post<Product>(`${baseUrl}/products`, newProduct)
+      ),
+      tap((p) => this.updatedProductCache(p))
+    );
   }
 
   updatedProductCache(product: Product) {
@@ -111,5 +131,24 @@ export class ProductService {
     });
 
     console.log('Updated cache');
+  }
+
+  uploadImages(images?: FileList): Observable<string[]> {
+    if (!images) return of([]);
+
+    const uploadObservables = Array.from(images).map((imgFile) =>
+      this.uploadImage(imgFile)
+    );
+
+    return forkJoin(uploadObservables);
+  }
+
+  uploadImage(imgFile: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', imgFile);
+
+    return this.http
+      .post<{ fileName: string }>(`${baseUrl}/files/product`, formData)
+      .pipe(map((resp) => resp.fileName));
   }
 }
